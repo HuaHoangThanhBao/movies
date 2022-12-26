@@ -1,0 +1,16 @@
+.pagination {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  .MuiPagination-root {
+    button {
+      color: white;
+    }
+  }
+  .Mui-selected {
+    background-color: #ff8040 !important;
+    color: black !important;
+  }
+  .MuiPaginationItem-root {
+    color: white !important;
+  }
+}
