@@ -1,0 +1,42 @@
+.social {
+  float: right;
+  width: 160px;
+  padding-top: 11px;
+  span {
+    float: left;
+    display: inline;
+    font-size: 10px;
+    color: #9f9f9f;
+    line-height: 16px;
+    padding-right: 5px;
+  }
+  ul {
+    list-style: none;
+    li {
+      float: left;
+      display: inline;
+      width: 16px;
+      padding-right: 2px;
+    }
+    a {
+      float: left;
+      display: inline;
+      width: 16px;
+      height: 16px;
+      background: url('../../dist/images/social.gif') no-repeat 0 0;
+      font-size: 0;
+      line-height: 0;
+      text-indent: -4000px;
+      &.facebook {
+        background-position: -18px 0;
+      }
+
+      &.vimeo {
+        background-position: -36px 0;
+      }
+      &.rss {
+        background-position: -54px 0;
+      }
+    }
+  }
+}
