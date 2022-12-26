@@ -1,0 +1,150 @@
+.movie {
+  width: calc(calc(100% / 5) - 10px);
+  // height: 350px;
+  float: left;
+  // margin-right: 10px;
+  user-select: none;
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    // justify-content: space-between;
+    gap: 10px;
+  }
+  &-image {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+    -moz-animation: fadeIn ease 2s;
+    -o-animation: fadeIn ease 2s;
+    -ms-animation: fadeIn ease 2s;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    a {
+      float: left;
+      display: inline;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 2;
+    }
+  }
+  &-title {
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 2px;
+    color: #ff8040;
+    &:hover {
+      color: #d91d2a;
+    }
+  }
+  span.name {
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 120px;
+    display: block;
+  }
+  .skeleton {
+    width: 100% !important;
+  }
+  @media screen and (max-width: 768px) {
+    width: calc(calc(100% / 3) - 10px);
+  }
+  @media screen and (max-width: 476px) {
+    width: calc(calc(100% / 2) - 10px);
+  }
+  @media screen and (max-width: 320px) {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.rating {
+  // width: 152px;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  p {
+    font-size: 10px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1;
+  }
+}
+
+.stars {
+  margin-left: 5px;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+
+  margin-left: 0.9em;
+  margin-right: 0.9em;
+  margin-bottom: 1.2em;
+
+  border-right: 0.3em solid transparent;
+  border-bottom: 0.7em solid #fc0;
+  border-left: 0.3em solid transparent;
+
+  /* Controlls the size of the stars. */
+  font-size: 6px;
+
+  &:before,
+  &:after {
+    content: '';
+
+    display: block;
+    width: 0;
+    height: 0;
+
+    position: absolute;
+    top: 0.6em;
+    left: -1em;
+
+    border-right: 1em solid transparent;
+    border-bottom: 0.7em solid #fc0;
+    border-left: 1em solid transparent;
+
+    transform: rotate(-35deg);
+  }
+
+  &:after {
+    transform: rotate(35deg);
+  }
+}
