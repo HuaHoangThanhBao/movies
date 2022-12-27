@@ -22,7 +22,19 @@ export const MovieList = ({ viewType }: MovieListProps) => {
   return (
     <>
       <div className={`movie-list ${viewType.toLowerCase()}`}>
-        {Object.keys(movie.results).length === 0 && Array.from(Array(20).keys()).map((item) => <Skeleton key={item} />)}
+        {viewType === MovieView.GRID &&
+          Object.keys(movie.results).length === 0 &&
+          Array.from(Array(20).keys()).map((item) => <Skeleton key={item} />)}
+        {viewType === MovieView.LIST &&
+          Object.keys(movie.results).length === 0 &&
+          Array.from(Array(20).keys()).map((item) => (
+            <div className='movie-list lazy'>
+              <Skeleton key={item} />
+              <Skeleton key={item} />
+              <Skeleton key={item} />
+              <Skeleton key={item} />
+            </div>
+          ))}
         {Object.keys(movie.results).length !== 0 &&
           movie.results.map((movie: Movie) => (
             <Suspense fallback={<Skeleton />} key={movie.id}>

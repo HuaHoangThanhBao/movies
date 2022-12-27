@@ -3,6 +3,7 @@ import { Movie } from '../../types/movie'
 import { Skeleton } from '../Skeleton'
 import { Rating } from '../Rating'
 import './movie.scss'
+import { NavLink } from 'react-router-dom'
 
 const MovieImage = React.lazy(() => import('../MovieImage'))
 
@@ -16,7 +17,9 @@ const MovieItem = ({ movie }: MovieItemProps) => {
       <Suspense fallback={<Skeleton />}>
         <MovieImage movie={movie} />
       </Suspense>
-      <h3 className='movie-title'>{movie.original_title}</h3>
+      <NavLink to={`/detail/${movie.id}`}>
+        <h3 className='movie-title'>{movie.original_title}</h3>
+      </NavLink>
       <h4 className='movie-date'>({new Date(movie.release_date).getFullYear()})</h4>
       <div className='rating'>
         <p>RATING</p>
