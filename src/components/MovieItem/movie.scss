@@ -44,11 +44,22 @@
   .skeleton {
     width: 100% !important;
   }
-  @media screen and (max-width: 768px) {
-    width: calc(calc(100% / 3) - 10px);
+  @media screen and (min-width: 769px) {
+    &:nth-child(5n) {
+      width: 20%;
+    }
   }
-  @media screen and (max-width: 476px) {
+  @media screen and (min-width: 477px) and (max-width: 768px) {
+    width: calc(calc(100% / 3) - 10px);
+    &:nth-child(3n) {
+      width: calc(100% / 3);
+    }
+  }
+  @media screen and (min-width: 321px) and (max-width: 476px) {
     width: calc(calc(100% / 2) - 10px);
+    &:nth-child(2n) {
+      width: calc(100% / 2);
+    }
   }
   @media screen and (max-width: 320px) {
     width: 100%;
