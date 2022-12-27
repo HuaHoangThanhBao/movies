@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
@@ -10,36 +10,48 @@ interface usePullToReuqestProps {
 
 export const usePullToReuqest = ({ refreshCont }: usePullToReuqestProps) => {
   const location = useLocation();
-  const [onMouseDown, setOnMouseDown] = useState(false)
-  const [startPoint, setStartPoint] = useState(0)
+  const onMouseDown = useRef(false)
+  const startPoint = useRef(0)
+  const allowToRefresh = useRef(false)
   const [pullChange, setPullChange] = useState(0)
   const [isShowLoadingEffect, setIsShowLoadingEffect] = useState(false)
   const categorySelection = useSelector((state: RootState) => state.movie.categorySelection)
 
   const pullStart = (e: MouseEvent) => {
     const { pageY } = e
-    setOnMouseDown(true)
-    setStartPoint(pageY)
+    onMouseDown.current = true
+    startPoint.current = pageY
   }
 
   const pull = (e: MouseEvent) => {
-    if (!onMouseDown) return
+    if (!onMouseDown.current) return
     if (location.pathname.includes('detail')) return
     const touch = e
     const { pageY } = touch
-    let pullLength = startPoint < pageY ? Math.abs(pageY - startPoint) : 0
+    let pullLength = startPoint.current < pageY ? Math.abs(pageY - startPoint.current) : 0
     setPullChange(pullLength)
     // console.log({ pageY, startPoint, pullLength, pullChange })
     if (pullChange > 200) {
+      allowToRefresh.current = true
       setIsShowLoadingEffect(true)
     }
   }
 
-  const endPull = () => {
-    setOnMouseDown(false)
-    setStartPoint(0)
+  const reset = () => {
+    allowToRefresh.current = false
+    onMouseDown.current = false
+    startPoint.current = 0
     setPullChange(0)
-    if(!onMouseDown || pullChange <= 0) return
+  }
+
+  const endPull = () => {
+    if(!onMouseDown.current) return
+    if(pullChange <= 200 && !allowToRefresh.current) {
+      reset()
+      return
+    }
+    if (onMouseDown && !allowToRefresh.current) return
+    reset()
     initLoading()
   }
 
