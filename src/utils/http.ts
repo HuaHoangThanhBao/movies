@@ -17,9 +17,6 @@ class Http {
     }, function (error) {
       return Promise.reject(error);
     });
-    this.instance.interceptors.response.use((config) => {
-      return config
-    })
   }
 }
 
