@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-lazy-load-image-component": "^1.5.2",
     "axios": "^1.2.1",
+    "jest-mock-axios": "^4.7.0-beta2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-lazy-load-image-component": "^1.5.6",
