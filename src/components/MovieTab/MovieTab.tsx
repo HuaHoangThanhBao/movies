@@ -12,6 +12,7 @@ interface MovieTabProps {
 }
 
 const MovieTab = ({ viewType, setViewType, refreshCont, pullChange, isShowLoadingEffect }: MovieTabProps) => {
+  console.log('isShowLoadingEffect:', isShowLoadingEffect)
   return (
     <>
       <View viewType={viewType} setViewType={setViewType} />
