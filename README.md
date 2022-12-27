@@ -36,7 +36,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-> Please record screen to a GIF file and attach link here
+![bandicam-2022-12-27-22-14-19-774](https://user-images.githubusercontent.com/36154018/209686790-9fe6dcad-339e-498a-9b9e-6b6f237aa176.gif)
 
 ## License
 
