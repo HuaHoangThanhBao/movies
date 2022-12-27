@@ -24,6 +24,7 @@ export const useFetchMovies = ({ callBack }: useFetchMoviesProps) => {
         case MovieCategory.DETAIL:
             promise = dispatch(getMovieDetail({ id }))
             break;
+        case MovieCategory.NOW_PLAYING:
         default:
             promise = dispatch(getMovieNowPlayingList({ page, responseCallBack: callBack }))
             break;
