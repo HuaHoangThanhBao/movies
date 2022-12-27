@@ -12,12 +12,10 @@ interface MovieTabProps {
 }
 
 const MovieTab = ({ viewType, setViewType, refreshCont, pullChange, isShowLoadingEffect }: MovieTabProps) => {
-  console.log('isShowLoadingEffect:', isShowLoadingEffect)
   return (
     <>
       <View viewType={viewType} setViewType={setViewType} />
       <div className='content' ref={refreshCont} style={{ marginTop: pullChange / 3.118 || '' }}>
-        {/* <MovieHead /> */}
         {isShowLoadingEffect && <CircularProgress style={{ display: 'block', margin: '0 auto', marginTop: '15px' }} />}
         <MovieList viewType={viewType} />
       </div>
