@@ -1,6 +1,10 @@
 .search {
   width: 346px;
   margin: 0 0 0 auto;
+  form {
+    display: flex;
+    flex-wrap: wrap;
+  }
   label {
     float: left;
     display: inline;
@@ -9,6 +13,7 @@
     color: #fff;
     line-height: 24px;
     padding-right: 6px;
+    margin-right: 5px;
   }
   &-field {
     width: 238px;
@@ -17,14 +22,17 @@
     color: #787878;
     padding: 2px 0 2px 2px;
     margin-right: 10px;
-    margin-left: 5px;
   }
   &-button {
     font-size: 14px;
     font-weight: bold;
     border: 0;
-    background: none;
+    background-color: transparent;
     color: #fff;
     cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+    width: 100%;
   }
 }

@@ -4,17 +4,11 @@
 }
 
 #logo {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  a {
-    float: left;
-    width: 239px;
-    height: 49px;
-    background: url('../../dist/images/logo.gif') no-repeat 0 0;
-    font-size: 0;
-    line-height: 0;
-    text-indent: -4000px;
+  float: left;
+  margin-top: 8px;
+  max-width: 200px;
+  img {
+    width: 100%;
   }
 }
 
@@ -65,7 +59,7 @@
         text-decoration: none;
         cursor: pointer;
         &:hover {
-          text-decoration: underline;
+          color: #d91d2a;
         }
       }
     }
@@ -93,8 +87,5 @@
     position: relative;
     top: 0;
     padding: 0;
-  }
-  #search {
-    margin: 0;
   }
 }

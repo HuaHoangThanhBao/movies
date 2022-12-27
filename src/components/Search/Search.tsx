@@ -1,22 +1,27 @@
+import { useNavigate } from 'react-router-dom'
 import { useRef } from 'react'
 import { useAppDispatch } from '../../app/store'
 import { MovieCategory } from '../../types/movie'
-import { getMovieSearchList, setCategorySelection, setMovieSearchValue } from '../MovieItem/Movie.slice'
+import { setCategorySelection, setMovieSearchValue } from '../MovieItem/Movie.slice'
+import { useFetchMovies } from '../../hooks/useFetchMovies'
 import './search.scss'
 
 export const Search = () => {
   const searchValue = useRef('')
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { refreshMovieList, renderErrorMessage } = useFetchMovies({ callBack: () => {} })
 
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     searchValue.current = e.target.value
     dispatch(setMovieSearchValue(searchValue.current))
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    navigate('/')
     dispatch(setCategorySelection(MovieCategory.SEARCH))
-    dispatch(getMovieSearchList({ searchValue: searchValue.current, page: 1, responseCallBack: () => {} }))
+    refreshMovieList(MovieCategory.SEARCH, 1)
     searchValue.current = ''
   }
 
@@ -35,6 +40,7 @@ export const Search = () => {
         />
         <input type='submit' value='GO!' className='search-button' />
       </form>
+      {renderErrorMessage()}
     </div>
   )
 }

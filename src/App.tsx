@@ -1,32 +1,66 @@
-import './App.scss'
-import { Header } from './components/Header/Header'
-// import { MovieHead } from './components/MovieHead'
-import { MovieList } from './components/MovieList/MovieList'
-import CircularProgress from '@mui/material/CircularProgress'
-import { useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import { usePullToReuqest } from './hooks/usePullToRequest'
 import { MovieView } from './types/movie'
-import { View } from './components/View'
+import { useRoutes } from 'react-router-dom'
+import { useFetchMovies } from './hooks/useFetchMovies'
+import { useEffectOnce } from './hooks/useEffectOnce'
+import './App.scss'
+import React from 'react'
+
+const Header = React.lazy(() => import('./components/Header/Header'))
+const MovieTab = React.lazy(() => import('./components/MovieTab/MovieTab'))
+const MovieDetail = React.lazy(() => import('./components/MovieDetail'))
 
 function App() {
   const [viewType, setViewType] = useState(MovieView.GRID)
   const refreshCont = useRef<HTMLDivElement>(null)
-  const { pullChange, isShowLoadingEffect, renderErrorMessage } = usePullToReuqest({ refreshCont })
+  const {
+    pullChange,
+    isShowLoadingEffect,
+    renderErrorMessage: renderErrorMessageWhenPulling
+  } = usePullToReuqest({ refreshCont })
+  const { refreshMovieList, renderErrorMessage } = useFetchMovies({ callBack: () => {} })
+
+  useEffectOnce(() => {
+    const promise = refreshMovieList()
+    return () => {
+      promise.abort()
+    }
+  })
+
+  const elements = useRoutes([
+    {
+      path: '/',
+      element: (
+        <Suspense fallback=''>
+          <MovieTab
+            viewType={viewType}
+            setViewType={setViewType}
+            pullChange={pullChange}
+            isShowLoadingEffect={isShowLoadingEffect}
+            refreshCont={refreshCont}
+          />
+        </Suspense>
+      )
+    },
+    {
+      path: '/detail/:id',
+      element: (
+        <Suspense fallback=''>
+          <MovieDetail />
+        </Suspense>
+      )
+    }
+  ])
 
   return (
     <div className='app'>
-      <Header />
-      <div id='main'>
-        <View viewType={viewType} setViewType={setViewType} />
-        <div className='content' ref={refreshCont} style={{ marginTop: pullChange / 3.118 || '' }}>
-          {/* <MovieHead /> */}
-          {isShowLoadingEffect && (
-            <CircularProgress style={{ display: 'block', margin: '0 auto', marginTop: '15px' }} />
-          )}
-          <MovieList viewType={viewType} />
-        </div>
-      </div>
+      <Suspense fallback=''>
+        <Header />
+      </Suspense>
+      <div id='main'>{elements}</div>
       {renderErrorMessage()}
+      {renderErrorMessageWhenPulling()}
     </div>
   )
 }

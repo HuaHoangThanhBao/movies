@@ -1,5 +1,10 @@
 import './skeleton.scss'
 
-export const Skeleton = () => {
-  return <span className='skeleton'></span>
+interface SkeletonProps {
+  height?: number | string
+  width?: number | string
+}
+
+export const Skeleton = ({ height, width }: SkeletonProps) => {
+  return <span className='skeleton' style={{ height, width }}></span>
 }

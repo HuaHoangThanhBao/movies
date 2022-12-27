@@ -10,11 +10,11 @@ interface PaginationProps {
   refreshMovieList: (movieType: MovieCategory, page: number) => void
 }
 
-export const Paginations = ({ movie, refreshMovieList }: PaginationProps) => {
+const Paginations = ({ movie, refreshMovieList }: PaginationProps) => {
   const movieType = useSelector((state: RootState) => state.movie.categorySelection)
   const page = useSelector((state: RootState) => state.movie.page)
 
-  const handleChange = (event, value: number) => {
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     refreshMovieList(movieType, value)
   }
 
@@ -24,3 +24,5 @@ export const Paginations = ({ movie, refreshMovieList }: PaginationProps) => {
     </div>
   )
 }
+
+export default Paginations

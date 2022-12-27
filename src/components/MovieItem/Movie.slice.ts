@@ -10,6 +10,10 @@ export interface MovieState {
   total_results: number
 }
 
+interface MovieDetailState {
+  movie: Movie
+}
+
 interface MovieRequestState {
   searchValue: string
   categorySelection: MovieCategory
@@ -17,7 +21,25 @@ interface MovieRequestState {
   currentRequestId: undefined | string
 }
 
-const initialState: MovieState & MovieRequestState = {
+const movieInitial = {
+  movie: {
+    id: '',
+    original_title: '',
+    overview: '',
+    popularity: -1,
+    poster_path: '',
+    release_date: '',
+    vote_average: -1,
+    vote_count: -1,
+    genres: [],
+    backdrop_path: '',
+    belongs_to_collection: {
+      poster_path: ''
+    }
+  }
+}
+
+const initialState: MovieDetailState & MovieState & MovieRequestState = {
   page: 0,
   results: [],
   total_pages: 0,
@@ -25,7 +47,8 @@ const initialState: MovieState & MovieRequestState = {
   loading: false,
   currentRequestId: '',
   categorySelection: MovieCategory.NOW_PLAYING,
-  searchValue: ''
+  searchValue: '',
+  ...movieInitial
 }
 
 export const getMovieNowPlayingList = createAsyncThunk(
@@ -34,7 +57,6 @@ export const getMovieNowPlayingList = createAsyncThunk(
     const response = await http.get<MovieState>(`movie/now_playing?page=${page}`, {
       signal: thunkAPI.signal
     })
-    console.log('response.data:', response.data)
     responseCallBack()
     return response.data
   }
@@ -62,6 +84,16 @@ export const getMovieSearchList = createAsyncThunk(
   }
 )
 
+export const getMovieDetail = createAsyncThunk(
+  'movie/getMovieDetail',
+  async ({ id }: { id: string }, thunkAPI) => {
+    const response = await http.get<Movie>(`/movie/${id}`, {
+      signal: thunkAPI.signal
+    })
+    return response.data
+  }
+)
+
 const movieSlice = createSlice({
   name: 'drag',
   initialState,
@@ -75,6 +107,27 @@ const movieSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(getMovieNowPlayingList.pending, (state, action) => {
+        state.page = 0
+        state.total_pages = 0
+        state.total_results = 0
+        state.results = []
+      })
+      .addCase(getMovieTopRatedList.pending, (state, action) => {
+        state.page = 0
+        state.total_pages = 0
+        state.total_results = 0
+        state.results = []
+      })
+      .addCase(getMovieSearchList.pending, (state, action) => {
+        state.page = 0
+        state.total_pages = 0
+        state.total_results = 0
+        state.results = []
+      })
+      .addCase(getMovieDetail.pending, (state, action) => {
+        state.movie = movieInitial.movie
+      })
       .addCase(getMovieNowPlayingList.fulfilled, (state, action) => {
         state.page = action.payload.page
         state.total_pages = action.payload.total_pages
@@ -92,6 +145,9 @@ const movieSlice = createSlice({
         state.total_pages = action.payload.total_pages
         state.total_results = action.payload.total_results
         state.results = action.payload.results
+      })
+      .addCase(getMovieDetail.fulfilled, (state, action) => {
+        state.movie = action.payload
       })
       .addMatcher<PendingAction>(
         (action) => action.type.endsWith('/pending'),

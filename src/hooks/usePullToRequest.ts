@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import { useFetchMovies } from './useFetchMovies'
@@ -8,20 +9,22 @@ interface usePullToReuqestProps {
 }
 
 export const usePullToReuqest = ({ refreshCont }: usePullToReuqestProps) => {
+  const location = useLocation();
   const [onMouseDown, setOnMouseDown] = useState(false)
   const [startPoint, setStartPoint] = useState(0)
   const [pullChange, setPullChange] = useState(0)
   const [isShowLoadingEffect, setIsShowLoadingEffect] = useState(false)
   const categorySelection = useSelector((state: RootState) => state.movie.categorySelection)
 
-  const pullStart = (e) => {
+  const pullStart = (e: MouseEvent) => {
     const { pageY } = e
     setOnMouseDown(true)
     setStartPoint(pageY)
   }
 
-  const pull = (e) => {
+  const pull = (e: MouseEvent) => {
     if (!onMouseDown) return
+    if (location.pathname.includes('detail')) return
     const touch = e
     const { pageY } = touch
     let pullLength = startPoint < pageY ? Math.abs(pageY - startPoint) : 0
@@ -32,13 +35,11 @@ export const usePullToReuqest = ({ refreshCont }: usePullToReuqestProps) => {
     }
   }
 
-  const endPull = (e) => {
+  const endPull = () => {
     setOnMouseDown(false)
     setStartPoint(0)
     setPullChange(0)
-    if(!onMouseDown || pullChange <= 0) {
-        return
-    }
+    if(!onMouseDown || pullChange <= 0) return
     initLoading()
   }
 
@@ -48,12 +49,11 @@ export const usePullToReuqest = ({ refreshCont }: usePullToReuqestProps) => {
   }
 
   const initLoading = () => {
-    if (refreshCont.current) {
-      setTimeout(() => {
-        console.log('start loading effect....')
-        refreshMovieList(categorySelection)
-      }, 1000)
-    }
+    if (!refreshCont.current) return
+    setTimeout(() => {
+      console.log('start loading effect....')
+      refreshMovieList(categorySelection)
+    }, 1000)
   }
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../app/store'
-import { getMovieNowPlayingList, getMovieSearchList, getMovieTopRatedList } from '../components/MovieItem/Movie.slice'
+import { getMovieDetail, getMovieNowPlayingList, getMovieSearchList, getMovieTopRatedList } from '../components/MovieItem/Movie.slice'
 import { MovieCategory } from '../types/movie'
 import { useShowErrorMessage } from './useShowErrorMessage'
 
@@ -12,7 +12,7 @@ export const useFetchMovies = ({ callBack }: useFetchMoviesProps) => {
   const searchValue = useSelector((state: RootState) => state.movie.searchValue)
   const dispatch = useAppDispatch()
 
-  const refreshMovieList = (movieType = MovieCategory.NOW_PLAYING, page = 1) => {
+  const refreshMovieList = (movieType = MovieCategory.NOW_PLAYING, page = 1, id: string = '') => {
     let promise
     switch (movieType) {
         case MovieCategory.TOP_RATED:
@@ -20,6 +20,9 @@ export const useFetchMovies = ({ callBack }: useFetchMoviesProps) => {
             break;
         case MovieCategory.SEARCH:
             promise = dispatch(getMovieSearchList({ searchValue, page, responseCallBack: callBack }))
+            break;
+        case MovieCategory.DETAIL:
+            promise = dispatch(getMovieDetail({ id }))
             break;
         default:
             promise = dispatch(getMovieNowPlayingList({ page, responseCallBack: callBack }))

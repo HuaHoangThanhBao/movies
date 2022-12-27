@@ -1,12 +1,15 @@
+import React, { Suspense } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
-import { useEffectOnce } from '../../hooks/useEffectOnce'
 import { useFetchMovies } from '../../hooks/useFetchMovies'
 import { Movie, MovieView } from '../../types/movie'
-import { MovieItem } from '../MovieItem'
-import { Paginations } from '../Pagination'
+// import { MovieItem } from '../MovieItem'
+// import { Paginations } from '../Pagination'
 import { Skeleton } from '../Skeleton'
 import './movieList.scss'
+
+const MovieItem = React.lazy(() => import('../MovieItem'))
+const Paginations = React.lazy(() => import('../Pagination'))
 
 interface MovieListProps {
   viewType: MovieView
@@ -14,21 +17,22 @@ interface MovieListProps {
 
 export const MovieList = ({ viewType }: MovieListProps) => {
   const movie = useSelector((state: RootState) => state.movie)
-  const { refreshMovieList, renderErrorMessage } = useFetchMovies({ callBack: () => {} })
-
-  useEffectOnce(() => {
-    refreshMovieList()
-  })
+  const { refreshMovieList } = useFetchMovies({ callBack: () => {} })
 
   return (
     <>
       <div className={`movie-list ${viewType.toLowerCase()}`}>
         {Object.keys(movie.results).length === 0 && Array.from(Array(20).keys()).map((item) => <Skeleton key={item} />)}
         {Object.keys(movie.results).length !== 0 &&
-          movie.results.map((movie: Movie) => <MovieItem key={movie.id} movie={movie} />)}
-        {renderErrorMessage()}
+          movie.results.map((movie: Movie) => (
+            <Suspense fallback={<Skeleton />} key={movie.id}>
+              <MovieItem movie={movie} />
+            </Suspense>
+          ))}
       </div>
-      <Paginations movie={movie} refreshMovieList={refreshMovieList} />
+      <Suspense fallback={<Skeleton />}>
+        <Paginations movie={movie} refreshMovieList={refreshMovieList} />
+      </Suspense>
     </>
   )
 }
