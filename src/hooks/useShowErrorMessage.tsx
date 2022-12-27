@@ -33,19 +33,23 @@ export const useShowErrorMessage = ({ refreshCallback }: useShowErrorMessageProp
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
     >
-      <DialogTitle id='alert-dialog-title'>{'Network Error'}</DialogTitle>
+      <DialogTitle data-testid='alert-dialog-title'>{'Network Error'}</DialogTitle>
       <DialogContent>
-        <DialogContentText id='alert-dialog-description'>
+        <DialogContentText data-testid='alert-dialog-description'>
           Something is temporarily wrong with your connection. Please make sure you are connected to the internet and
           then refresh your movie list by pulling down or just hit the refresh button.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
-        <Button onClick={handleRefresh}>Refresh</Button>
+        <Button data-testid='button-close' onClick={handleClose}>
+          Close
+        </Button>
+        <Button data-testid='button-refresh' onClick={handleRefresh}>
+          Refresh
+        </Button>
       </DialogActions>
     </Dialog>
   )
 
-  return { renderErrorMessage, handleShowMessage }
+  return { renderErrorMessage, handleClose, handleShowMessage, handleRefresh, open }
 }
