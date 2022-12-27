@@ -28,7 +28,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Movie list Pagination
+- [x] Movie list pagination
 - [x] Code splitting
 - [x] Unit test with React Testing Library
 
