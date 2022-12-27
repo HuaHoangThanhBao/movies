@@ -19,6 +19,7 @@ export const Search = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (searchValue.current === '') return
     navigate('/')
     dispatch(setCategorySelection(MovieCategory.SEARCH))
     refreshMovieList(MovieCategory.SEARCH, 1)
